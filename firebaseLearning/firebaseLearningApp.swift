@@ -10,11 +10,23 @@ import FirebaseCore
 
 @main
 struct firebaseLearningApp: App {
-    @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
-       
+    
+    @StateObject var vm:AuthService = AuthService()
+    @State var splashIs: Bool = true
+    init() {
+           FirebaseApp.configure()  
+       }
        var body: some Scene {
            WindowGroup {
-               LoginScreen()
+               if splashIs {
+                   Splash(splashIs: $splashIs)
+               }else{
+                   if vm.isLoggedIn{
+                       HomeScreen()
+                   }else{
+                       LoginScreen()
+                   }
+               }
            }
        }
    }

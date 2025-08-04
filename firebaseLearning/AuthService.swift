@@ -17,11 +17,11 @@ class AuthService: ObservableObject{
     
     init() {
         checkUserStatus()
-        }
+    }
     
     func checkUserStatus() {
-            isLoggedIn = Auth.auth().currentUser != nil
-        }
+        isLoggedIn = Auth.auth().currentUser != nil
+    }
     
     func signUP(email:String, password:String) async{
         do{
@@ -29,13 +29,13 @@ class AuthService: ObservableObject{
             print(authResult)
             print("SignUp Succesfully")
             await MainActor.run {
-                            self.isLoggedIn = true
-                        }
+                self.isLoggedIn = true
+            }
         }catch let error as NSError{
             print("Error: \(error)")
             await MainActor.run {
-                            self.isLoggedIn = false
-                        }
+                self.isLoggedIn = false
+            }
         }
         
         func Login(){

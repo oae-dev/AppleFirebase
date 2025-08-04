@@ -16,7 +16,7 @@ struct HomeScreen: View {
                 } else {
                     Text("❌ User is not logged in")
                 }
-            }
+            }.navigationTitle("")
             .onAppear {
                 authService.checkUserStatus()
             }
