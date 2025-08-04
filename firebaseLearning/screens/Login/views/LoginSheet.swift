@@ -9,7 +9,9 @@ import SwiftUI
 
 struct LoginSheet: View {
     
-    @StateObject var vm: AuthService = AuthService()
+    @EnvironmentObject var Authvm: AuthService
+    var onSuccessLogin: () -> Void
+    
     var body: some View {
         NavigationStack{
             VStack(spacing:20){
@@ -17,12 +19,14 @@ struct LoginSheet: View {
                     .font(.system(size: 20,weight: .bold))
                     .frame(maxWidth: .infinity)
                 
-                TextFeildView(fieldFor: "Email", data: $vm.email)
+                TextFeildView(fieldFor: "Email", data: $Authvm.email)
                 
-                TextFeildView(fieldFor: "Password", data: $vm.password)
+                TextFeildView(fieldFor: "Password", data: $Authvm.password)
                 
                 Button {
-                    
+                    Task{
+                        await Authvm.login(email: Authvm.email, password: Authvm.password)
+                    }
                 } label: {
                     Text("Login")
                         .font(.system(size: 20,weight: .bold))
@@ -47,6 +51,6 @@ struct LoginSheet: View {
     }
 
 
-#Preview {
-    LoginSheet()
-}
+//#Preview {
+//    LoginSheet()
+//}

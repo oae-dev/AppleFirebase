@@ -8,10 +8,10 @@
 import SwiftUI
 
 struct LoginScreen: View {
+    @EnvironmentObject var Authvm: AuthService
     @State var showSignUpSheet: Bool = false
     @State var showLoginSheet: Bool = false
     @State private var sheetHeight: CGFloat = 550
-    @ObservedObject var vm: AuthService = AuthService()
     @State private var navigateToHome: Bool = false
     
     var body: some View {
@@ -23,10 +23,12 @@ struct LoginScreen: View {
                     .ignoresSafeArea()
                 
                 VStack(spacing: 30){
-                    VStack {
-                        Text("Hello.")
-                        Text("Create Your Account")
-                    }.font(.system(size: 30,weight: .bold))
+                    if showSignUpSheet{
+                        VStack {
+                            Text("Hello.")
+                            Text("Create Your Account")
+                        }.font(.system(size: 30,weight: .bold))
+                    }
                     
                     Spacer()
                     
@@ -67,7 +69,7 @@ struct LoginScreen: View {
                                 print("press email")
                             }
                         
-                    }.padding(.horizontal,30)
+                    }.padding()
                     
                     googleAndXView {
                         print("onGoogle")
@@ -92,7 +94,7 @@ struct LoginScreen: View {
                     .sheet(isPresented: $showSignUpSheet, onDismiss: {
                         print("sheetCancel")
                     }){
-                        signUpSheet( vm: vm, onSuccessLogin: {
+                        signUpSheet(onSuccessSignUp: {
                             showSignUpSheet = false
                             DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                                 navigateToHome = true
@@ -104,8 +106,13 @@ struct LoginScreen: View {
                     .sheet(isPresented: $showLoginSheet, onDismiss: {
                         print("sheetCancel")
                     }){
-                        LoginSheet()
-                            .presentationDetents([.height(sheetHeight)])
+                        LoginSheet(onSuccessLogin: {
+                            showLoginSheet = false
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3 , execute: {
+                                navigateToHome = true
+                            })
+                        })
+                        .presentationDetents([.height(sheetHeight)])
                     }
             }
         }

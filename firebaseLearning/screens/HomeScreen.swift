@@ -8,17 +8,18 @@
 import SwiftUI
 
 struct HomeScreen: View {
-    @StateObject var authService = AuthService()
+    @EnvironmentObject var Authvm: AuthService
     var body: some View {
             VStack {
-                if authService.isLoggedIn {
-                    Text("✅ User is logged in")
-                } else {
-                    Text("❌ User is not logged in")
+                Button("logout") {
+                    Authvm.logout()
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3 , execute: {
+                        Authvm.isLoggedIn = false
+                    })
                 }
             }.navigationTitle("")
             .onAppear {
-                authService.checkUserStatus()
+                Authvm.checkUserStatus()
             }
         }
 }

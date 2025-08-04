@@ -11,7 +11,7 @@ import FirebaseCore
 @main
 struct firebaseLearningApp: App {
     
-    @StateObject var vm:AuthService = AuthService()
+    @StateObject var Authvm:AuthService = AuthService()
     @State var splashIs: Bool = true
     init() {
            FirebaseApp.configure()  
@@ -21,10 +21,12 @@ struct firebaseLearningApp: App {
                if splashIs {
                    Splash(splashIs: $splashIs)
                }else{
-                   if vm.isLoggedIn{
+                   if Authvm.isLoggedIn{
                        HomeScreen()
+                           .environmentObject(Authvm)
                    }else{
                        LoginScreen()
+                           .environmentObject(Authvm)
                    }
                }
            }

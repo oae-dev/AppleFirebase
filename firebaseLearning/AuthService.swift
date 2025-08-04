@@ -37,11 +37,35 @@ class AuthService: ObservableObject{
                 self.isLoggedIn = false
             }
         }
-        
-        func Login(){
-            
-        }
-        
-        
     }
+    
+    func login(email: String, password: String) async {
+        do {
+            let authResult = try await Auth.auth().signIn(withEmail: email, password: password)
+            print("ogin Successfully: \(authResult.user.email ?? "")")
+            await MainActor.run {
+                self.isLoggedIn = true
+            }
+        } catch let error as NSError {
+            print("Login failed: \(error.localizedDescription)")
+            await MainActor.run {
+                self.isLoggedIn = false
+            }
+        }
+    }
+
+    
+    func logout() {
+        do {
+            try Auth.auth().signOut()
+            //                DispatchQueue.main.async {
+            //                    self.isLoggedIn = false
+            //                }
+            print("Successfully logged out")
+        } catch let signOutError as NSError {
+            print("Error signing out: \(signOutError.localizedDescription)")
+        }
+    }
+    
 }
+

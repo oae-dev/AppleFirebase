@@ -9,8 +9,8 @@ import SwiftUI
 
 struct signUpSheet: View {
     @State var isChecked:Bool = false
-    @StateObject var vm: AuthService
-    var onSuccessLogin: () -> Void
+    @EnvironmentObject var Authvm: AuthService
+    var onSuccessSignUp: () -> Void
     @Environment(\.dismiss) var dismiss
     
     var body: some View {
@@ -19,11 +19,11 @@ struct signUpSheet: View {
                 .font(.system(size: 20,weight: .bold))
                 .frame(maxWidth: .infinity)
             
-            TextFeildView(fieldFor: "Email", data: $vm.email)
+            TextFeildView(fieldFor: "Email", data: $Authvm.email)
             
-            TextFeildView(fieldFor: "Password", data: $vm.password)
+            TextFeildView(fieldFor: "Password", data: $Authvm.password)
             
-            TextFeildView(fieldFor: "Password", data: $vm.confirmPassword)
+            TextFeildView(fieldFor: "Password", data: $Authvm.confirmPassword)
             
             HStack{
                 Button(action: {
@@ -41,10 +41,10 @@ struct signUpSheet: View {
             Button {
                 print("SignUp")
                 Task {
-                    await vm.signUP(email: vm.email, password: vm.password)
-                    if vm.isLoggedIn{
+                    await Authvm.signUP(email: Authvm.email, password: Authvm.password)
+                    if Authvm.isLoggedIn{
                         dismiss()
-                        onSuccessLogin()
+                        onSuccessSignUp()
                     }
                 }
                 
