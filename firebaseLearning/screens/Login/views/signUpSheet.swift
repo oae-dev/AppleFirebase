@@ -49,12 +49,21 @@ struct signUpSheet: View {
                 }
                 
             } label: {
-                Text("Sign Up")
-                    .font(.system(size: 20,weight: .bold))
-                    .padding()
-                    .foregroundStyle(Color.white)
-                    .background(Color.green)
-                    .clipShape(RoundedRectangle(cornerRadius: 20))
+               if Authvm.loader{
+                    ProgressView()
+                       .frame(width: 140, height: 60)
+                       .tint(.white)
+                       .background(Color.green)
+                       .clipShape(RoundedRectangle(cornerRadius: 20))
+                }else{
+                    Text("Sign Up")
+                        .font(.system(size: 20,weight: .bold))
+                        .frame(width: 140, height: 60)
+                        .foregroundStyle(Color.white)
+                        .background(Color.green)
+                        .clipShape(RoundedRectangle(cornerRadius: 20))
+                }
+                
             }.frame(maxWidth: .infinity)
 
             googleAndXView {

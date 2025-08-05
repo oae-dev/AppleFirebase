@@ -28,27 +28,35 @@ struct LoginSheet: View {
                         await Authvm.login(email: Authvm.email, password: Authvm.password)
                     }
                 } label: {
-                    Text("Login")
-                        .font(.system(size: 20,weight: .bold))
-                        .padding()
-                        .foregroundStyle(Color.white)
-                        .background(Color.green)
-                        .clipShape(RoundedRectangle(cornerRadius: 20))
+                    if Authvm.loader{
+                        ProgressView()
+                            .frame(width: 140, height: 60)
+                            .tint(.white)
+                            .background(Color.green)
+                            .clipShape(RoundedRectangle(cornerRadius: 20))
+                    }else{
+                        Text("Login")
+                            .font(.system(size: 20,weight: .bold))
+                            .frame(width: 140, height: 60)
+                            .foregroundStyle(Color.white)
+                            .background(Color.green)
+                            .clipShape(RoundedRectangle(cornerRadius: 20))
+                    }
                 }
-                }
-
-                    
-                
-                
-                googleAndXView {
-                    print("onGoogle")
-                } onXTap: {
-                    print("onX")
-                }
-            }.padding()
-        }
-        
+            }
+            
+            
+            
+            
+            googleAndXView {
+                print("onGoogle")
+            } onXTap: {
+                print("onX")
+            }
+        }.padding()
     }
+    
+}
 
 
 //#Preview {
